@@ -1,4 +1,4 @@
-class MainController < UIViewController 
+class MainController < UIViewController
 
   def viewDidLoad
     super
@@ -10,55 +10,17 @@ class MainController < UIViewController
     init_nav
     rmq(self.view).apply_style :root_view
 
-    # Create your UIViews here
-    @hello_world_label = rmq.append(UILabel, :hello_world).get
-  end
+    rmq.append(UILabel, :search_label)
 
-  def init_nav
-    self.title = 'Title Here'
+    @query = rmq.append(UITextField, :query).focus.get
 
-    self.navigationItem.tap do |nav|
-      nav.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
-                                                                           target: self, action: :nav_left_button)
-      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh,
-                                                                           target: self, action: :nav_right_button)
+    rmq.append(UIButton, :submit_button).on(:touch) do |sender|
+      puts 'button tapped'
     end
   end
 
-  def nav_left_button
-    puts 'Left button'
-  end
-
-  def nav_right_button
-    puts 'Right button'
-  end
-
-  # Remove if you are only supporting portrait
-  def supportedInterfaceOrientations
-    UIInterfaceOrientationMaskAll
-  end
-
-  # Remove if you are only supporting portrait
-  def willAnimateRotationToInterfaceOrientation(orientation, duration: duration)
-    rmq.all.reapply_styles
+  def init_nav
+    self.title = 'Image Browserer'
   end
 
 end
-
-
-__END__
-
-# You don't have to reapply styles to all UIViews, if you want to optimize, 
-# another way to do it is tag the views you need to restyle in your stylesheet, 
-# then only reapply the tagged views, like so:
-def logo(st)
-  st.frame = {t: 10, w: 200, h: 96}
-  st.centered = :horizontal
-  st.image = image.resource('logo')
-  st.tag(:reapply_style)
-end
-
-# Then in willAnimateRotationToInterfaceOrientation
-rmq(:reapply_style).reapply_styles
-
-
