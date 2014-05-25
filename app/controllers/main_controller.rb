@@ -27,7 +27,6 @@ class MainController < UIViewController
     if query && (query != "")
       query = query.gsub(/\s/, "%20")
       url = "https://secure.flickr.com/search/?q=#{query}"
-      puts url
 
       rmq.animations.start_spinner
 
@@ -37,7 +36,6 @@ class MainController < UIViewController
             m.first
           end
 
-          puts images
           open_images_controller(images) if images.any?
           rmq.animations.stop_spinner
         end
